@@ -145,7 +145,7 @@ public class Servidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void OffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OffActionPerformed
-        Usuario user = new Usuario("David", true,"192.255.168.1");
+        Usuario user = new Usuario("David", true,"192.255.168.1",);
         _context.escribirUsuario(user);
     }//GEN-LAST:event_OffActionPerformed
 

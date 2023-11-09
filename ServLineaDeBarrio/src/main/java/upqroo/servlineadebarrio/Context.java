@@ -13,9 +13,19 @@ public class Context {
     public static List<Usuario> usuarios = new ArrayList<>();
     private String archivo = "Usuarios.txt";
 
+    public void activarUsuario(Usuario user) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombre().equals(nombreUsuario)) {
+                usuario.setEstado(true);
+                usuario = user; // Asigna la IP deseada
+                // Puedes agregar más lógica si es necesario
+            }
+        }
+    }
+
     public void escribirUsuario(Usuario usuario) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true))) {
-            String linea = usuario.getNombre() + "," + usuario.getEstado() + "," + usuario.getIp();
+            String linea = usuario.getNombre() + "," + usuario.getContrasena();
             writer.write(linea);
             writer.newLine();
         } catch (IOException e) {
@@ -23,31 +33,31 @@ public class Context {
         }
         usuarios.add(usuario);
         DefaultTableModel modelo = (DefaultTableModel) TableUsers.getModel();
-        modelo.addRow(new Object[] { usuario.getNombre(), usuario.getEstado(), usuario.getIp() });
+        modelo.addRow(new Object[]{usuario.getNombre(), usuario.getEstado(), usuario.getIp()});
         modelo.fireTableDataChanged();
     }
 
-    public void leerUsuarios(javax.swing.JTable TableUsers) throws IOException {
-        this.TableUsers = TableUsers;
-        DefaultTableModel modelo = (DefaultTableModel) TableUsers.getModel();
+    public void leerUsuarios(javax.swing.JTable table) throws IOException {
+        TableUsers = table;
+        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
         modelo.setRowCount(0); // Limpiar las filas existentes en la tabla
 
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] partes = linea.split(",");
-                if (partes.length == 3) {
+                if (partes.length >= 2) {
                     String nombre = partes[0];
-                    boolean estado = Boolean.parseBoolean(partes[1]);
-                    String ip = partes[2];
-                    Usuario usuario = new Usuario(nombre, estado, ip);
-                    modelo.addRow(new Object[] { usuario.getNombre(), usuario.getEstado(), usuario.getIp() });
+                    String contrasena = partes[1];
+                    // Estado inicialmente falso y IP nula
+                    Usuario usuario = new Usuario(nombre, false, null);
+                    modelo.addRow(new Object[]{usuario.getNombre(), usuario.getEstado(), usuario.getIp()});
                     modelo.fireTableDataChanged();
+                    usuarios.add(usuario);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
 }

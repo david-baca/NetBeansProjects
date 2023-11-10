@@ -12,29 +12,62 @@ public class Context {
     private static javax.swing.JTable TableUsers;
     public static List<Usuario> usuarios = new ArrayList<>();
     private String archivo = "Usuarios.txt";
-
-    public void activarUsuario(Usuario user) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getNombre().equals(nombreUsuario)) {
-                usuario.setEstado(true);
-                usuario = user; // Asigna la IP deseada
-                // Puedes agregar más lógica si es necesario
+    
+    public String usuariosActivos(){
+        String request = null;
+        for (Usuario item : usuarios) {
+            if (item.getEstado()) {
+                // Si el usuario está activo, agrega su información a la cadena
+                request=request+item.getNombre()+" ";
             }
         }
+        return request;
+    }
+    
+    public String buscarUsuario(String nombre){
+        for (Usuario item : usuarios) {
+            if (item.getNombre().equals(nombre)) {
+                return item.getIp();
+            }
+        }
+        return null;
     }
 
-    public void escribirUsuario(Usuario usuario) {
+    public String activarUsuario(String nombre, String contrasena,String ip) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getNombre().equals(nombre) &&
+                usuario.getContrasena().equals(contrasena)){
+                usuario.setEstado(true);
+                usuario.setIp(ip);
+                
+                return usuariosActivos();
+            }
+        }
+        return null;
+    }
+
+    public boolean escribirUsuario(String nombre, String contrasena) {
+        for (Usuario item : usuarios) {
+            if (item.getNombre().equals(nombre)) {
+                return false;
+            }
+        }
+        
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true))) {
-            String linea = usuario.getNombre() + "," + usuario.getContrasena();
+            String linea = nombre + "," + contrasena;
             writer.write(linea);
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        usuarios.add(usuario);
+        
+        Usuario user = new Usuario(nombre, false, null, contrasena);
+        usuarios.add(user);
         DefaultTableModel modelo = (DefaultTableModel) TableUsers.getModel();
-        modelo.addRow(new Object[]{usuario.getNombre(), usuario.getEstado(), usuario.getIp()});
+        modelo.addRow(new Object[]{nombre, false, null});
         modelo.fireTableDataChanged();
+        
+        return true;
     }
 
     public void leerUsuarios(javax.swing.JTable table) throws IOException {
@@ -50,7 +83,7 @@ public class Context {
                     String nombre = partes[0];
                     String contrasena = partes[1];
                     // Estado inicialmente falso y IP nula
-                    Usuario usuario = new Usuario(nombre, false, null);
+                    Usuario usuario = new Usuario(nombre, false, null, contrasena);
                     modelo.addRow(new Object[]{usuario.getNombre(), usuario.getEstado(), usuario.getIp()});
                     modelo.fireTableDataChanged();
                     usuarios.add(usuario);

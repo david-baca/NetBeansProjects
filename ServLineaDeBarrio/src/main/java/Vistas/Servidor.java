@@ -2,6 +2,7 @@ package Vistas;
 import java.io.IOException;
 import javax.swing.table.DefaultTableModel;
 import upqroo.servlineadebarrio.Context;
+import upqroo.servlineadebarrio.HiloEscucha;
 import upqroo.servlineadebarrio.Usuario;
 
 public class Servidor extends javax.swing.JFrame {
@@ -22,7 +23,6 @@ public class Servidor extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        Ip = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         Off = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -36,11 +36,8 @@ public class Servidor extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
 
-        Ip.setForeground(new java.awt.Color(255, 255, 255));
-        Ip.setText("172.255.255.1");
-
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("IP Server:");
+        jLabel1.setText("Modo servidor");
 
         Off.setText("Apagar");
         Off.addActionListener(new java.awt.event.ActionListener() {
@@ -56,8 +53,6 @@ public class Servidor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Ip)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Off)
                 .addContainerGap())
@@ -67,7 +62,6 @@ public class Servidor extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Ip)
                     .addComponent(jLabel1)
                     .addComponent(Off))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -145,12 +139,10 @@ public class Servidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void OffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OffActionPerformed
-        Usuario user = new Usuario("David", true,"192.255.168.1",);
-        _context.escribirUsuario(user);
+        dispose();
     }//GEN-LAST:event_OffActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Ip;
     private javax.swing.JButton Off;
     private javax.swing.JTable TableUsers;
     private javax.swing.JLabel jLabel1;

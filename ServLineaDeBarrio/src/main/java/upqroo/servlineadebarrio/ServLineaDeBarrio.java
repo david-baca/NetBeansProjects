@@ -8,6 +8,7 @@ public class ServLineaDeBarrio {
         Servidor ventana = new Servidor();
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
+        HiloEscucha hilo = new HiloEscucha();
     }
     
     

@@ -1,9 +1,9 @@
 package upqroo.lineadebarrio;
-import Vistas.Principal;
+import Vistas.IniciarSesion;
 
 public class Main {
     public static void main(String[] args) {
-        Principal ventana = new Principal();
+        IniciarSesion ventana = new IniciarSesion();
         ventana.setVisible(true);
         ventana.setLocationRelativeTo(null);
     }

@@ -1,5 +1,6 @@
 package Vistas;
 import java.io.IOException;
+import java.net.InetAddress;
 import javax.swing.table.DefaultTableModel;
 import upqroo.servlineadebarrio.Context;
 import upqroo.servlineadebarrio.HiloEscucha;
@@ -10,6 +11,8 @@ public class Servidor extends javax.swing.JFrame {
     public Servidor() throws IOException {
         initComponents();
         _context.leerUsuarios(TableUsers);
+        InetAddress direccionIP = InetAddress.getLocalHost();
+        InputHost.setText(direccionIP.getHostAddress());
     }
 
     /**
@@ -25,6 +28,7 @@ public class Servidor extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Off = new javax.swing.JButton();
+        InputHost = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableUsers = new javax.swing.JTable();
@@ -37,7 +41,7 @@ public class Servidor extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Modo servidor");
+        jLabel1.setText("Modo servidor en:");
 
         Off.setText("Apagar");
         Off.addActionListener(new java.awt.event.ActionListener() {
@@ -46,6 +50,9 @@ public class Servidor extends javax.swing.JFrame {
             }
         });
 
+        InputHost.setForeground(new java.awt.Color(255, 255, 255));
+        InputHost.setText("172.255.255.255.255");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -53,6 +60,8 @@ public class Servidor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(InputHost)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Off)
                 .addContainerGap())
@@ -63,7 +72,8 @@ public class Servidor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(Off))
+                    .addComponent(Off)
+                    .addComponent(InputHost))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -140,9 +150,11 @@ public class Servidor extends javax.swing.JFrame {
 
     private void OffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OffActionPerformed
         dispose();
+        System.exit(0);
     }//GEN-LAST:event_OffActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel InputHost;
     private javax.swing.JButton Off;
     private javax.swing.JTable TableUsers;
     private javax.swing.JLabel jLabel1;

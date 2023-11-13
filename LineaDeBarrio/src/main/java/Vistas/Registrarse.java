@@ -4,10 +4,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import upqroo.lineadebarrio.Context;
+import upqroo.lineadebarrio.HiloEscucha;
 
 public class Registrarse extends javax.swing.JFrame {
+    Context _context = new Context();
     public Registrarse() {
         initComponents();
+        _context.AgregarLabel(InputMensaje);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -23,7 +30,7 @@ public class Registrarse extends javax.swing.JFrame {
         InputContrasena = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         InputNombre = new javax.swing.JTextPane();
-        hola = new javax.swing.JLabel();
+        InputMensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -58,8 +65,6 @@ public class Registrarse extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(InputNombre);
 
-        hola.setText("hola");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -71,17 +76,16 @@ public class Registrarse extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(hola)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(InputContrasena)
-                                .addComponent(jScrollPane1)))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(InputContrasena)
+                            .addComponent(jScrollPane1)
+                            .addComponent(InputMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -98,7 +102,7 @@ public class Registrarse extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InputContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(hola)
+                .addComponent(InputMensaje)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Registrarse)
@@ -145,30 +149,18 @@ public class Registrarse extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void RegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarseActionPerformed
-
-        try {
-            Socket socket = new Socket("172.16.128.6", 6198);
-            DataOutputStream envia = new DataOutputStream(socket.getOutputStream());
-
-            String solicitud = "REGISTRO&" + InputNombre.getText() + "&" + InputContrasena.getPassword();
-            envia.writeUTF(solicitud);
-
-            // Recibir y devolver la respuesta del servidor
-            DataInputStream recibe = new DataInputStream(socket.getInputStream());
-            String respuesta = recibe.readUTF();
-            hola.setText(respuesta);
-        } catch (IOException e) {
-            e.printStackTrace();
-            hola.setText(e.getMessage());
-        }
-    
+        InputMensaje.setText("Cargando...");
+        char[] passwordChars = InputContrasena.getPassword();
+        String  password = new String(passwordChars);
+        _context.GenerarPeticion("REGISTRAR&UPQROO&" + InputNombre.getText() + "&UPQROO&" + password);
+        
     }//GEN-LAST:event_RegistrarseActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField InputContrasena;
+    private javax.swing.JLabel InputMensaje;
     private javax.swing.JTextPane InputNombre;
     private javax.swing.JButton Registrarse;
-    private javax.swing.JLabel hola;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

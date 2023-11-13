@@ -1,9 +1,11 @@
 package upqroo.servlineadebarrio;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -14,11 +16,11 @@ public class Context {
     private String archivo = "Usuarios.txt";
     
     public String usuariosActivos(){
-        String request = null;
+        String request = "";
         for (Usuario item : usuarios) {
             if (item.getEstado()) {
                 // Si el usuario está activo, agrega su información a la cadena
-                request=request+item.getNombre()+" ";
+                request=request+item.getNombre()+"&UPQROO&";
             }
         }
         return request;
@@ -33,23 +35,56 @@ public class Context {
         return null;
     }
 
-    public String activarUsuario(String nombre, String contrasena,String ip) {
-        for (Usuario usuario : usuarios) {
+    public boolean activarUsuario(String nombre, String contrasena,String ip) {
+        boolean res = false;
+        int filaActualizada = -1;
+        String ipNueva="";
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = usuarios.get(i);
             if (usuario.getNombre().equals(nombre) &&
-                usuario.getContrasena().equals(contrasena)){
+                usuario.getContrasena().equals(contrasena)) {
+                
+                res=true;
                 usuario.setEstado(true);
                 usuario.setIp(ip);
+                ipNueva = ip;
+                filaActualizada = i; // Almacenamos el índice de la fila actualizada
                 
-                return usuariosActivos();
             }
         }
-        return null;
+
+        if (filaActualizada != -1) {
+            // Actualizar la tabla solo si se ha encontrado y actualizado un usuario
+            actualizarFilaTabla(filaActualizada, ipNueva);
+        }
+
+        return res;
+    }
+    
+    public void TarsmiteUsuarios(){
+        for (Usuario item : usuarios) {
+            if(item.getEstado()){
+                try{
+                    String UsersActivos = "ACTUALIZA&UPQROO&" + usuariosActivos();
+                    Socket Enviar = new Socket(item.getIp(),6199);
+                    DataOutputStream manda = new DataOutputStream(Enviar.getOutputStream());
+                    manda.writeUTF(UsersActivos);
+                }catch (IOException e) {e.printStackTrace();}
+            }
+        }
+    }
+    
+    private void actualizarFilaTabla(int rowIndex, String ip) {
+        DefaultTableModel modelo = (DefaultTableModel) TableUsers.getModel();
+        modelo.setValueAt(true, rowIndex, 1); // Actualizar el estado en la columna 1
+        modelo.setValueAt(ip, rowIndex, 2); // Actualizar la ip en la columna 1
+        modelo.fireTableCellUpdated(rowIndex, 1);
     }
 
-    public boolean escribirUsuario(String nombre, String contrasena) {
+    public String escribirUsuario(String nombre, String contrasena) {
         for (Usuario item : usuarios) {
             if (item.getNombre().equals(nombre)) {
-                return false;
+                return "Ya existe un usuario con ese nombre";
             }
         }
         
@@ -67,7 +102,7 @@ public class Context {
         modelo.addRow(new Object[]{nombre, false, null});
         modelo.fireTableDataChanged();
         
-        return true;
+        return "Usuario creado";
     }
 
     public void leerUsuarios(javax.swing.JTable table) throws IOException {

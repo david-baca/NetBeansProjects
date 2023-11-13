@@ -8,6 +8,7 @@ public class Usuario {
 
     public Usuario(String nombre, boolean estado, String ip, String contrasena) {
         this.nombre = nombre;
+        this.contrasena = contrasena;
         this.estado = estado;
         this.ip = ip;
     }

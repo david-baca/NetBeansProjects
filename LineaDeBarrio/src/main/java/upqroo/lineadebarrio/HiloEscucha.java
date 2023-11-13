@@ -47,8 +47,8 @@ public class HiloEscucha extends Thread{
                     if (comando.equals("MENSAJE")) {
                         Vesino vesino = _context.getVesino(respuesta=partes[1]);
                         if(vesino != null){
-                            Conversacion panel = vesino.GetPanel();
-                            panel.AgregarMensaje(partes[2]+": "+partes[3]);                            
+                            System.out.println(texto);
+                            vesino.PostMensaje(partes[1]+": "+partes[2]);                            
                         }
                     }
                 }

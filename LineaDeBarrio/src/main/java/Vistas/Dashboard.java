@@ -7,6 +7,8 @@ public class Dashboard extends javax.swing.JFrame {
         initComponents();
         _context.AgregarConversacionPanel(Conversacion);
         _context.AgregarMenuTabla(OptionsVesinos); 
+        _context.CargarVesinoActivo("Angel");
+        _context.CargarVesinoActivo("Gino");
     }
     
     @SuppressWarnings("unchecked")

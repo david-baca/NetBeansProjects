@@ -105,10 +105,16 @@ public class Context {
         Menu.removeAll(); // Limpiamos todos los items actuales del menú
         for (Vesino item : vesinos) {
             javax.swing.JMenuItem menuItem = new javax.swing.JMenuItem(item.GetNombre());
-            menuItem.addActionListener(new ActionListener() {
+            menuItem.addActionListener(new ActionListener()  {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CargarConversacion(item);
+                    System.out.println(e.getActionCommand());
+                    Vesino x = getVesino( e.getActionCommand());
+                    conversacion.removeAll();
+                    conversacion.add(x.GetPanel(), BorderLayout.CENTER);
+                    conversacion.revalidate();
+                    conversacion.repaint();
+                    System.out.println(e.getActionCommand());
                 }
             });
             Menu.add(menuItem);
